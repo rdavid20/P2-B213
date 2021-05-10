@@ -87,7 +87,7 @@ def Controls(speed):
             sendToDB("rc {} {} {} {}".format(a,b,c,d))
         time.sleep(0.1)
 
-def loggingToDB():
+def createDB():
     DB_NAME = "mydatabase4.db"
     con = lite.connect(DB_NAME)
     cur = con.cursor()
@@ -95,6 +95,13 @@ def loggingToDB():
     CREATE TABLE IF NOT EXISTS DroneData(Time DATETIME DEFAULT CURRENT_TIMESTAMP, Temperature INT, Height INT);
     CREATE TABLE IF NOT EXISTS Commands(Time DATETIME DEFAULT CURRENT_TIMESTAMP, Command TEXT);
     """)
+    con.commit()
+    con.close()
+
+def loggingToDB():
+    DB_NAME = "mydatabase4.db"
+    con = lite.connect(DB_NAME)
+    cur = con.cursor()
     while True:
         height = tello.get_height()
         temp = tello.get_highest_temperature()
@@ -102,6 +109,7 @@ def loggingToDB():
         cur.execute("INSERT INTO DroneData(Temperature, Height) VALUES (?, ?)",(temp, height))
         con.commit()
         time.sleep(1)
+    con.close()
 
 def sendToDB(insertThis):
     DB_NAME = "mydatabase4.db"
@@ -109,6 +117,7 @@ def sendToDB(insertThis):
     cur = con.cursor()
     cur.execute("INSERT INTO Commands(Command) VALUES (?)",(insertThis,))
     con.commit()
+    con.close()
 
 def connectToDrone():
     while True:
@@ -119,8 +128,8 @@ def connectToDrone():
             print("Cannot connect to Drone")
 
 tello = tello.Tello()
-connectToDrone()
-
+tello.connect()
+createDB()
 tello.streamon()
 sendToDB("streamon")
 
