@@ -32,7 +32,7 @@ def VideoFeed():
             break
 
     cv2.destroyAllWindows()
-    sys.quit()
+    quit()
 
 def Controls(speed):
     landed = True
