@@ -120,14 +120,6 @@ def sendToDB(insertThis):
     con.commit()
     con.close()
 
-def connectToDrone():
-    while True:
-        try:
-            tello.connect()
-            break
-        except:
-            print("Cannot connect to Drone")
-
 tello = tello.Tello()
 tello.connect()
 createDB()
