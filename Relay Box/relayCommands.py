@@ -1,4 +1,4 @@
-ALtimport threading
+import threading
 import socket
 import sys
 
