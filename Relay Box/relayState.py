@@ -1,11 +1,9 @@
 import threading
 import socket
 import sys
-"""
-test
-"""
 
 pcAddr = ('192.168.137.1', 8890)
+
 def relayState():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(('', 8890))
