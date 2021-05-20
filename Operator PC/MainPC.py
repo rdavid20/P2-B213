@@ -123,17 +123,23 @@ def sendToDB(insertThis):
     con.close()
 
 def start():
-    tello = tello.Tello()
-    tello.connect()
-    createDB()
-    tello.streamon()
-    sendToDB("streamon")
+    while True:
+        try:
+            tello = tello.Tello()
+            tello.connect()
+            createDB()
+            tello.streamon()
+            sendToDB("streamon")
+            break
+        except:
+            print("Program Failed. Try again")
+            sys.exit()
+    videoThread = threading.Thread(target=VideoFeed)
+    videoThread.start()
+    controlThread = threading.Thread(target=Controls, args=(50,))
+    controlThread.start()
+    loggingThread = threading.Thread(target=loggingToDB)
+    loggingThread.start()
 
 start()
-videoThread = threading.Thread(target=VideoFeed)
-videoThread.start()
-controlThread = threading.Thread(target=Controls, args=(50,))
-controlThread.start()
-loggingThread = threading.Thread(target=loggingToDB)
-loggingThread.start()
 sys.exit()
