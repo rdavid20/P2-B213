@@ -66,6 +66,7 @@ def Controls(speed):
             d+= -speed
 
         if(keyboard.is_pressed('r') == True):
+            tello.land()
             break
 
         if(keyboard.is_pressed("space") == True):
@@ -105,13 +106,19 @@ def loggingToDB():
     DB_NAME = "mydatabase4.db"
     con = lite.connect(DB_NAME)
     cur = con.cursor()
+    counter = 0
     while True:
-        height = tello.get_height()
-        temp = tello.get_highest_temperature()
+        counter += 1
+        if(keyboard.is_pressed('r') == True):
+            break
 
-        cur.execute("INSERT INTO DroneData(Temperature, Height) VALUES (?, ?)",(temp, height))
-        con.commit()
-        time.sleep(1)
+        if(counter >= 10):
+            height = tello.get_height()
+            temp = tello.get_highest_temperature()
+            cur.execute("INSERT INTO DroneData(Temperature, Height) VALUES (?, ?)",(temp, height))
+            con.commit()
+            counter = 0
+        time.sleep(0.1)
     con.close()
 
 def sendToDB(insertThis):
@@ -122,24 +129,23 @@ def sendToDB(insertThis):
     con.commit()
     con.close()
 
-def start():
-    while True:
-        try:
-            tello = tello.Tello()
-            tello.connect()
-            createDB()
-            tello.streamon()
-            sendToDB("streamon")
-            break
-        except:
-            print("Program Failed. Try again")
-            sys.exit()
-    videoThread = threading.Thread(target=VideoFeed)
-    videoThread.start()
-    controlThread = threading.Thread(target=Controls, args=(50,))
-    controlThread.start()
-    loggingThread = threading.Thread(target=loggingToDB)
-    loggingThread.start()
+while True:
+    try:
+        tello = tello.Tello()
+        tello.connect()
+        createDB()
+        tello.streamon()
+        sendToDB("streamon")
+        break
+    except:
+        print("Program Failed. Try again")
+        sys.exit()
 
-start()
+videoThread = threading.Thread(target=VideoFeed)
+videoThread.start()
+controlThread = threading.Thread(target=Controls, args=(50,))
+controlThread.start()
+loggingThread = threading.Thread(target=loggingToDB)
+loggingThread.start()
+ 
 sys.exit()
