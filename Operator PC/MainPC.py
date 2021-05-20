@@ -120,12 +120,14 @@ def sendToDB(insertThis):
     con.commit()
     con.close()
 
-tello = tello.Tello()
-tello.connect()
-createDB()
-tello.streamon()
-sendToDB("streamon")
+def start():
+    tello = tello.Tello()
+    tello.connect()
+    createDB()
+    tello.streamon()
+    sendToDB("streamon")
 
+start()
 videoThread = threading.Thread(target=VideoFeed)
 videoThread.start()
 controlThread = threading.Thread(target=Controls, args=(50,))
