@@ -32,7 +32,6 @@ def VideoFeed():
             break
 
     cv2.destroyAllWindows()
-    quit()
 
 def Controls(speed):
     landed = True
@@ -65,6 +64,9 @@ def Controls(speed):
 
         if(keyboard.is_pressed('left arrow') == True):
             d+= -speed
+
+        if(keyboard.is_pressed('r') == True):
+            break
 
         if(keyboard.is_pressed("space") == True):
             if(landed == False):
@@ -134,3 +136,4 @@ controlThread = threading.Thread(target=Controls, args=(50,))
 controlThread.start()
 loggingThread = threading.Thread(target=loggingToDB)
 loggingThread.start()
+sys.exit()
