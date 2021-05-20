@@ -66,8 +66,15 @@ def Controls(speed):
             d+= -speed
 
         if(keyboard.is_pressed('r') == True):
-            tello.land()
-            break
+            if(landed == False):
+                try:
+                    tello.land()
+                    sendToDB("land")
+                except:
+                    print("Error: Landing Failed")
+                break
+            else:
+                break
 
         if(keyboard.is_pressed("space") == True):
             if(landed == False):
