@@ -9,5 +9,5 @@ def relayState():
             data, server = s2.recvfrom(1518)
             s2.sendto(data, ('192.168.0.144', 8890))
 
-stateThread = threading.Thread(target=relayState())
-stateThread.start()
+relayState()
+
