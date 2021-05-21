@@ -9,6 +9,8 @@ def relayVideo():
      s.bind(('',11111))
      while True:
             data, server = s.recvfrom(1518)
-            s.sendto(data, pcAddr)
+            
+            if(server[0] == '192.168.10.1'):
+               s.sendto(data, pcAddr)
 
 relayVideo()
