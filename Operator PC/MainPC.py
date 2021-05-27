@@ -17,7 +17,7 @@ def VideoFeed():
 
     while True:
         img = tello.get_frame_read().frame
-        img = cv2.resize(img, (720,480))
+        img = cv2.resize(img, (1280,720))
         string = 'Battery: {}%'.format(tello.get_battery())
         img = cv2.putText(img, string, org, font,
         				fontScale, color, thickness, cv2.LINE_AA)
